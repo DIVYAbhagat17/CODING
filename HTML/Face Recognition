@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>FACE VERIFICATION</title>
+</head>
+
+<body style="text-align:center; font-family:italic;">
+
+    <h1>FACE VERIFICATION</h1>
+
+    <input type="file" id="imageInput">
+    <br><br>
+
+    <button onclick="verifyFace()">Verify Face</button>
+
+    <br><br>
+    <img id="preview" width="200">
+
+    <div id="result" style="font-size:20px; margin-top:20px;"></div>
+
+    <script>
+        let input = document.getElementById("imageInput");
+        let preview = document.getElementById("preview");
+
+        let registeredImage = "registered.jpg";
+
+        input.onchange = function() {
+            let file = input.files[0];
+            preview.src = URL.createObjectURL(file);
+        }
+
+        function verifyFace() {
+            let result = document.getElementById("result");
+
+            if (!input.files[0]) {
+                result.innerHTML = "Upload image first!";
+                result.style.color = "red";
+                return;
+            }
+
+            let fileName = input.files[0].name;
+
+            if (fileName === "registered.jpg.png") {
+                result.innerHTML = "✔ VERIFIED";
+                result.style.color = "green";
+            } else {
+                result.innerHTML = "❌ NOT VERIFIED";
+                result.style.color = "red";
+            }
+        }
+    </script>
+
+</body>
+</html>
