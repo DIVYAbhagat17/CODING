@@ -2,11 +2,17 @@ import random
 
 choices = ["rock", "paper", "scissors"]
 
-user = input("Enter rock, paper, or scissors: ").lower()
+while True:
+    user = input("Enter rock, paper, or scissors (or 'quit' to stop): ").lower()
 
-if user not in choices:
-    print("Invalid choice!")
-else:
+    if user == "quit":
+        print("Thanks for playing! 👋")
+        break
+
+    if user not in choices:
+        print("Invalid choice! Try again.\n")
+        continue
+
     computer = random.choice(choices)
 
     print("Computer chose:", computer)
@@ -21,3 +27,5 @@ else:
         print("You win! 🎉")
     else:
         print("Computer wins!")
+
+    print()
