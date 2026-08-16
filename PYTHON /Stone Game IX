@@ -1,11 +1,32 @@
 class Solution(object):
     def stoneGameIX(self, stones):
+        def check(cnt):
+            if cnt[1] == 0:
+                return False
+
+            # Alice takes a remainder-1 stone first
+            cnt[1] -= 1
+
+            # Number of relevant moves that can follow
+            moves = 1 + min(cnt[1], cnt[2]) * 2 + cnt[0]
+
+            # If remainder-1 stones are left over,
+            # one additional move can be made
+            if cnt[1] > cnt[2]:
+                cnt[1] -= 1
+                moves += 1
+
+            return moves % 2 == 1 and cnt[1] != cnt[2]
+
         cnt = [0, 0, 0]
+
         for x in stones:
             cnt[x % 3] += 1
-        if cnt[1] == 0 and cnt[2] == 0:
-            return False
-        if cnt[0] % 2 == 0:
-            return cnt[1] >= 1 and cnt[2] >= 1 and abs(cnt[1] - cnt[2]) <= 2
-        return (cnt[1] >= 1 and cnt[2] >= 3) or \
-               (cnt[2] >= 1 and cnt[1] >= 3)
+
+        # Case 1: Alice starts with remainder 1
+        case1 = cnt[:]
+
+        # Case 2: Alice starts with remainder 2
+        case2 = [cnt[0], cnt[2], cnt[1]]
+
+        return check(case1) or check(case2)
