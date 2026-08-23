@@ -1,0 +1,24 @@
+class Solution:
+    def sumGame(self, num):
+        n = len(num)
+        mid = n // 2
+
+        left = right = 0
+        lq = rq = 0
+
+        for i in range(mid):
+            if num[i] == '?':
+                lq += 1
+            else:
+                left += int(num[i])
+
+        for i in range(mid, n):
+            if num[i] == '?':
+                rq += 1
+            else:
+                right += int(num[i])
+
+        if (lq + rq) % 2 == 1:
+            return True
+
+        return left - right != (rq - lq) * 9 // 2
