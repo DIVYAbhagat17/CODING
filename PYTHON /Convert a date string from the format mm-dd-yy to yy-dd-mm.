@@ -1,0 +1,4 @@
+def mm_dd_yy_to_yy_dd_mm(date: str) -> str:
+    parts = date.split("-")
+    return parts[2] + "-" + parts[1] + "-" + parts[0]
+
