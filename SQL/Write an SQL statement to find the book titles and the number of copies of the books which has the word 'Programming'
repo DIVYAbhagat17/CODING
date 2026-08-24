@@ -1,0 +1,6 @@
+select bc.title , count(bcp.accession_no)
+from book_catalogue bc
+join book_copies bcp
+on bc.ISBN_no = bcp.ISBN_no
+where bc.title ilike '%programming%'
+group by bc.title
