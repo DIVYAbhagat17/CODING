@@ -1,0 +1,11 @@
+select s.student_fname
+from students s
+join members m
+on s.roll_no=m.roll_no
+join book_issue bi
+on m.member_no=bi.member_no
+join book_copies bc
+on bc.accession_no=bi.accession_no
+join book_catalogue b
+on bc.isbn_no=b.isbn_no
+where b.year>2018;
