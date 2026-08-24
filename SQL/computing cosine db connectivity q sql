@@ -1,0 +1,34 @@
+import sys
+import os
+import math
+import psycopg2
+with open("parameter.txt","r") as f:
+    char=f.readline().split()[0]
+database=sys.argv[1]
+user=os.environ.get('PGUSER')
+password=os.environ.get('PGPASSWORD')
+host=os.environ.get('PFHOST')
+port=os.environ.get('PGPORT')
+conn=psycopg2.connect(
+    dbname=database,
+    user=user,
+    password=password,
+    host=host,
+    port=port)
+cur=conn.cursor()
+query="""
+select sum(m.host_team_score)
+from matches m
+join teams t on m.host_team_id=t.team_id
+where m.host_team_score>m.guest_team_score
+and t.name like %s
+"""
+cur.execute(query,(char+'%s',))
+row=cur.fetchone()
+s=row[0] if row[0] is not None else 0
+x=s*10
+x_deg=x*(math.pi/180)
+result=round(math.cos(x_deg),2)
+print(result)
+cur.close()
+conn.close()
