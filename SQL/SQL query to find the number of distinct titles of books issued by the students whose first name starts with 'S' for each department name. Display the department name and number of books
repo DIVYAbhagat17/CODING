@@ -1,0 +1,14 @@
+select d.department_name,count(distinct bc.title)
+from book_catalogue bc
+join book_copies b
+on b.isbn_no=bc.isbn_no
+join book_issue bi
+on b.accession_no=bi.accession_no
+join members m
+on m.member_no=bi.member_no
+join students s
+on s.roll_no=m.roll_no
+join departments d
+on d.department_code=s.department_code
+where s.student_fname LIKE '%'
+group by d.department_name;
