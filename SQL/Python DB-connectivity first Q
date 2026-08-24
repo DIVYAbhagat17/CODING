@@ -1,0 +1,33 @@
+import psycopg2
+import os
+import sys
+conn=None
+try:
+    conn=psycopg2.connect(
+        database ="flis",
+        user = os.environ.get('PGUSER'),
+        password = os.environ.get('PGPASSWORD'),
+        host = os.environ.get('PGHOST'),
+        port = os.environ.get('PGPORT')
+        )
+    cur=conn.cursor()
+    cur.execute('''
+        select * from teams 
+        order by  team_id desc limit 4
+        
+        
+        ''')
+    result=cur.fetchall()  
+    for row in result:
+        team_id=row[0]
+        name=row[1]
+        city=row[2]
+        jersey_away_color=row[5]
+        print(team_id,name,city)
+    
+    cur.close()
+except(exception,psycopg2.DatabaseError) as error:
+    print(error)
+finally:
+    if conn is not None:
+        conn.close()
