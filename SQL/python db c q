@@ -1,0 +1,37 @@
+import sys
+import os
+import psycopg2
+with open("date.txt","r") as f:
+    match_date=f.readline().split()[0]
+database = sys.argv[1]
+user=os.environ.get('PGUSER')
+password=os.environ.get('PGPASSWORD')
+host=os.environ.get('PGHOST')
+port=os.environ.get('PGPORT')
+conn=psycopg2.connect(
+    dbname=database,
+    user=user,
+    password=password,
+    host=host,
+    port=port)
+cur=conn.cursor()
+query="""
+  SELECT r.name
+  FROM matches m 
+  join match_referees mr ON m.match_num=mr.match_num
+  join referees r ON mr.referee =r.referee_id
+  where  m.match_date=%s
+  """
+cur.execute(query,(match_date,))
+row=cur.fetchone()
+if row:
+     full_name=row[0].strip()
+     parts=full_name.split()
+     last_name=parts[-1]
+     other_names=parts[:-1]
+     initials =" ".join(name[0].upper()+"." for name in other_names)
+     print(f"{last_name} {initials}")
+else:
+    print("No referee found for the given date.")
+cur.close()
+conn.close()
