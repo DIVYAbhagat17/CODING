@@ -1,0 +1,7 @@
+#Write an SQL query to find the name of the host team that played a match on '2020-05-15'
+
+select name n
+from teams t
+join matches m
+on 
+where match_date='2020-05-15'
