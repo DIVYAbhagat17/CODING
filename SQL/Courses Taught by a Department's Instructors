@@ -1,0 +1,44 @@
+import psycopg2
+import sys
+import os
+
+with open("input.txt", "r") as file:
+    team_name = file.read().strip()
+
+conn = None
+
+try:
+    conn = psycopg2.connect(
+        database=databsae_name,
+        user=os.environ.get('PGUSER'),
+        password=os.environ.get('PGPASSWORD'),
+        host=os.environ.get('PGHOST'),
+        port=os.environ.get('PGPORT')
+    )
+
+    cur = conn.cursor()
+
+    query = """select i.name,c.course_id,c.title
+                from instructor i
+                join teaches t
+                on i.id=t.id
+                join course c
+                on t.course_id=c.course_id
+                where c.dept_name=%s
+                """           
+    cur.execute(query, (team_name,))
+    result = cur.fetchall()
+    for row in result:
+        depcode=row[0]
+        depname=row[1]
+        depx=row[2]
+        
+        print(depcode+" "+depname+" "+depx)
+    cur.close()
+
+except (Exception, psycopg2.DatabaseError) as error:
+    print(error)
+
+finally:
+    if conn is not None:
+        conn.close()
