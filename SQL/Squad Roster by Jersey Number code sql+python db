@@ -1,0 +1,45 @@
+# Read input with input(); print your answer.
+# Read input with input(); print your answer.
+import psycopg2
+import sys
+import os
+
+with open("team.txt", "r") as file:
+    team_name = file.read().strip()
+a
+conn = None
+
+try:
+    conn = psycopg2.connect(
+        database=database_name,
+        user=os.environ.get('PGUSER'),
+        password=os.environ.get('PGPASSWORD'),
+        host=os.environ.get('PGHOST'),
+        port=os.environ.get('PGPORT')
+    )
+
+    cur = conn.cursor()
+
+    query = """
+    select p.name,p.jersey_no
+    from players p
+    join teams t 
+    on t.team_id=p.team_id
+    where t.name=%s
+    order by p.jersey_no asc
+    """
+    cur.execute(query, (team_name,))
+    result = cur.fetchall()
+    for row in result:
+        name=row[0]
+        jersey_no=row[1]
+        print(name+" "+str(jersey_no))
+
+    cur.close()
+
+except (Exception, psycopg2.DatabaseError) as error:
+    print(error)
+
+finally:
+    if conn is not None:
+        conn.close()
