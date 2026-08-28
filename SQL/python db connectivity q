@@ -1,0 +1,40 @@
+# Write your Python solution here.
+#Write a Python program that reads a student's first name from a file named name.txt (in the same folder as the program), 
+#retrieves the student's gender, and prints MALE if the gender is M or FEMALE if the gender is F . 
+#For example, if the first name of the student is 'Vikas' and the gender is 'M' .
+#Then output must be MALE only. Note: No spaces. For example, if the first name of the student is 'Rita' and the gender is 'F' .
+#Then output must be FEMALE only. Note: No spaces.
+
+
+import psycopg2
+import sys
+import os
+with open("name.txt","r") as file:
+  student_fname=file.read().strip()
+conn=None
+try:
+    conn= psycopg2.connect(
+    database=sys.argv[1],
+    user=os.environ.get('PGUSER'),
+    password=os.environ.get('PGPASSWORD'),
+    port=os.environ.get('PGPORT')
+    )
+    cur=conn.cursor()
+    query="""
+    select  gender 
+    from students
+    where student_fname=%s
+    """
+    cur.execute(query,(student_fname,))
+    result=cur.fetchall()
+    for row in result:
+        if row[0]=='M':
+            print("MALE")
+        elif row[0] == 'F':
+            print("FEMALE")
+    cur.close()
+except(Exception,psycopg2.DatabaseError) as error:
+    print(error)
+finally:
+    if conn is not None:
+        conn.close()
