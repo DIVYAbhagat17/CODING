@@ -3,7 +3,7 @@ import os
 import psycopg2
 with open("date.txt","r") as f:
     match_date=f.readline().split()[0]
-database = sys.argv[1]
+database = database_name
 user=os.environ.get('PGUSER')
 password=os.environ.get('PGPASSWORD')
 host=os.environ.get('PGHOST')
