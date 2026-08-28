@@ -1,0 +1,38 @@
+import psycopg2
+import os
+import sys
+
+with open("team.txt", "r") as file:
+    team_id = file.read().strip()
+
+conn = None
+
+try:
+    conn = psycopg2.connect(
+    database=sys.argv[1],
+    user=os.environ.get('PGUSER'),
+    password=os.environ.get('PGPASSWORD'),
+    host=os.environ.get('PGHOST'),
+    port=os.environ.get('PGPORT')
+    )
+
+    cur = conn.cursor()
+
+    query = """
+        SELECT playground
+        FROM teams
+        WHERE team_id = %s
+    """
+
+    cur.execute(query, (team_id,))
+
+    row = cur.fetchone()
+
+    if row:
+        print(row[0])
+
+    cur.close()
+    conn.close()
+
+except Exception as error:
+    print(error)
