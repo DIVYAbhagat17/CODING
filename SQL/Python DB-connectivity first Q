@@ -3,13 +3,13 @@ import os
 import sys
 conn=None
 try:
-    conn=psycopg2.connect(
-        database ="flis",
-        user = os.environ.get('PGUSER'),
-        password = os.environ.get('PGPASSWORD'),
-        host = os.environ.get('PGHOST'),
-        port = os.environ.get('PGPORT')
-        )
+    conn = psycopg2.connect(
+    database="database_name",
+    user="username",
+    password="password",
+    host="localhost",
+    port="5432"
+)
     cur=conn.cursor()
     cur.execute('''
         select * from teams 
