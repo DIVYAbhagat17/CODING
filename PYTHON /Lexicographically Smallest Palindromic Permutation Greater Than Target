@@ -1,0 +1,92 @@
+class Solution(object):
+
+    def lexPalindromicPermutation(self, s, target):
+        from collections import Counter
+
+        n = len(s)
+        count = Counter(s)
+
+        # Check if palindrome is possible
+        odd = [c for c in count if count[c] % 2 == 1]
+
+        if len(odd) > 1:
+            return ""
+
+        middle = odd[0] if odd else ""
+        m = n // 2
+
+        # Count characters for left half
+        half_count = [0] * 26
+
+        for c in count:
+            half_count[ord(c) - ord('a')] = count[c] // 2
+
+        target_left = target[:m]
+
+        # Try to match target's left half
+        left = []
+        possible = True
+
+        for i in range(m):
+            x = ord(target_left[i]) - ord('a')
+
+            if half_count[x] > 0:
+                left.append(target_left[i])
+                half_count[x] -= 1
+            else:
+                possible = False
+                break
+
+        # If the complete left half matched,
+        # check the palindrome itself.
+        if possible:
+            left_str = ''.join(left)
+            candidate = left_str + middle + left_str[::-1]
+
+            if candidate > target:
+                return candidate
+
+        # Rebuild counts
+        half_count = [0] * 26
+
+        for c in count:
+            half_count[ord(c) - ord('a')] = count[c] // 2
+
+        # Find the rightmost position where we can
+        # put a character greater than target[i]
+        for i in range(m - 1, -1, -1):
+
+            temp = half_count[:]
+
+            # Match target's prefix
+            valid = True
+
+            for j in range(i):
+                x = ord(target_left[j]) - ord('a')
+
+                if temp[x] == 0:
+                    valid = False
+                    break
+
+                temp[x] -= 1
+
+            if not valid:
+                continue
+
+            current = ord(target_left[i]) - ord('a')
+
+            # Choose smallest character greater than target[i]
+            for x in range(current + 1, 26):
+
+                if temp[x] > 0:
+                    temp[x] -= 1
+
+                    left_str = target_left[:i] + chr(x + ord('a'))
+
+                    # Fill remaining characters as small as possible
+                    for k in range(26):
+                        left_str += chr(k + ord('a')) * temp[k]
+
+                    return left_str + middle + left_str[::-1]
+
+        return ""
