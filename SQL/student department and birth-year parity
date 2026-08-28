@@ -1,0 +1,50 @@
+
+import psycopg2
+import sys
+import os
+
+with open("name.txt", "r") as file:
+    team_name = file.read().strip()
+
+conn = None
+
+try:
+    conn = psycopg2.connect(
+        database=db_name,
+        user=os.environ.get('PGUSER'),
+        password=os.environ.get('PGPASSWORD'),
+        host=os.environ.get('PGHOST'),
+        port=os.environ.get('PGPORT')
+    )
+
+    cur = conn.cursor()
+
+    query = """
+    select  s.student_fname,d.department_name,s.dob
+    from students s 
+    join departments d
+    on s.department_code=d.department_code
+    where s.student_fname=%s
+    """
+    cur.execute(query, (team_name,))
+    result = cur.fetchall()
+    for row in  result:
+        firstname=row[0]
+        depname=row[1]
+        date=row[2]
+        year=date.year
+        if year % 2==0:
+            print(firstname+","+depname+",Even")
+        else:
+            print(firstname+","+depname+",Odd")
+
+    
+
+    cur.close()
+
+except (Exception, psycopg2.DatabaseError) as error:
+    print(error)
+
+finally:
+    if conn is not None:
+        conn.close()
