@@ -1,0 +1,9 @@
+class Solution(object):
+    def uniformArray(self, nums1):
+        odd = any(x % 2 == 1 for x in nums1)
+        even = any(x % 2 == 0 for x in nums1)
+
+        if not odd or not even:
+            return True
+
+        return True
