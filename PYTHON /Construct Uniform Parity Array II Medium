@@ -1,0 +1,9 @@
+class Solution:
+    def uniformArray(self, nums1):
+        odds = [x for x in nums1 if x % 2 == 1]
+        evens = [x for x in nums1 if x % 2 == 0]
+        
+        feasible_even = (len(odds) == 0)
+        feasible_odd = (len(evens) == 0) or (bool(odds) and min(odds) < min(evens))
+        
+        return feasible_even or feasible_odd
