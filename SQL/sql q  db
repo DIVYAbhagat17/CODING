@@ -1,0 +1,51 @@
+import psycopg2
+import sys
+import os
+
+def reverse_name(name):
+    return name[::-1]
+
+conn = None
+
+try:
+    with open("category.txt", "r") as f:
+        cat_input = f.read().strip()
+
+    conn = psycopg2.connect(
+        database = db_name,
+        user = os.environ.get('PGUSER'),
+        password = os.environ.get('PGPASSWORD'),
+        host = os.environ.get('PGHOST'),
+        port = os.environ.get('PGPORT')
+    )
+
+    cur = conn.cursor()
+
+    cur.execute('''select p.product_name,
+                          sum(o.quantity)
+                   from orders o
+                   join product p on o.product_id = p.product_id
+                   join categories c on p.category_id = c.category_id
+                   where c.category_name = %s
+                   group by p.product_name
+                   having sum(o.quantity) > (select avg(quantity) from orders)
+                   order by p.product_name''', (cat_input,))
+
+    result = cur.fetchall()
+
+    for row in result:
+        pname = row[0]
+        tot_qty = row[1]
+
+        r_pname = reverse_name(pname)
+
+        print(r_pname + ',' + str(tot_qty))
+
+    cur.close()
+
+except (Exception, psycopg2.DatabaseError) as error:
+    print(error)
+
+finally:
+    if conn is not None:
+        conn.close()
