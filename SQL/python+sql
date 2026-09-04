@@ -1,0 +1,74 @@
+QUESTION-'''Write a Python program to print the formatted manager name, lowercase team name, and masked jersey home color for teams located in a given city.
+
+The city name is given in a file named **city.txt** residing in the same folder as the Python program file.
+Note the following:
+* The output must be sorted in ascending order of the manager's name.
+* Formatted manager name: Convert the manager's name to UPPERCASE and replace any spaces with hyphens (e.g., "Ravi Kumar" becomes "RAVI-KUMAR").
+* Lowercase team name: Convert the team name to entirely lowercase.
+* Masked jersey home color: Replace all vowels (a, e, i, o, u, A, E, I, O, U) in the color with an asterisk '*' (e.g., "Blue" becomes "Bl**").
+
+The output must be comma-separated with no extra spaces.
+**Note:** The output may have multiple lines if there are multiple matches. Print one line per match.
+The output of the Python program must be:
+**formatted_manager,team_lower,masked_color**'''
+
+
+import psycopg2
+import sys
+import os
+
+def format_manager(name):
+    return name.upper().replace(" ", "-")
+
+def lower_team(name):
+    return name.lower()
+
+def mask_color(color):
+    vowels = "aeiouAEIOU"
+    return "".join(["*" if c in vowels else c for c in color])
+
+conn = None
+
+try:
+    with open("city.txt", "r") as f:
+        city_input = f.read().strip()
+
+    conn = psycopg2.connect(
+        database = db_name,
+        user = os.environ.get('PGUSER'),
+        password = os.environ.get('PGPASSWORD'),
+        host = os.environ.get('PGHOST'),
+        port = os.environ.get('PGPORT')
+    )
+
+    cur = conn.cursor()
+
+    cur.execute('''select m.name,
+                          t.name,
+                          t.jersey_home_color
+                   from managers m
+                   join teams t on m.team_id = t.team_id
+                   where t.city = %s
+                   order by m.name''', (city_input,))
+
+    result = cur.fetchall()
+
+    for row in result:
+        m_name = row[0]
+        t_name = row[1]
+        color = row[2]
+
+        f_mgr = format_manager(m_name)
+        l_team = lower_team(t_name)
+        m_col = mask_color(color)
+
+        print(f_mgr + ',' + l_team + ',' + m_col)
+
+    cur.close()
+
+except (Exception, psycopg2.DatabaseError) as error:
+    print(error)
+
+finally:
+    if conn is not None:
+        conn.close()
