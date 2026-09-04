@@ -1,0 +1,78 @@
+QUESTION- '''Write a Python program to print the player initials, team name, and hexadecimal jersey number for players who play under a given manager, but only if the player's jersey number is strictly less than the average jersey number of all players in the league.
+
+The manager's name is given in a file named **manager.txt** residing in the same folder as the Python program file.
+
+Note the following:
+
+* The output must be sorted in ascending order of the player's name.
+* Player initials: Extract the first letter of each word in the player's name, capitalize it, and append a dot (e.g., "Ravi Kumar" becomes "R.K.").
+* Team name: Kept as is.
+* Hexadecimal jersey number: Convert the integer jersey number to a hexadecimal string, prefixed with "0x" and in uppercase (e.g., jersey 26 becomes "0x1A").
+
+The output must be comma-separated with no extra spaces.
+
+**Note:** The output may have multiple lines if there are multiple matches. Print one line per match.
+
+The output of the Python program must be:
+**player_initials,team_name,hex_jersey** '''
+
+
+
+
+CODE-
+import psycopg2
+import sys
+import os
+
+def get_initials(name):
+    return "".join([word[0].upper() + "." for word in name.split()])
+
+def hex_jersey(jersey_no):
+    return hex(int(jersey_no)).upper().replace("0X", "0x")
+
+conn = None
+
+try:
+    with open("manager.txt", "r") as f:
+        mgr_input = f.read().strip()
+
+    conn = psycopg2.connect(
+        database = sys.argv[1],
+        user = os.environ.get('PGUSER'),
+        password = os.environ.get('PGPASSWORD'),
+        host = os.environ.get('PGHOST'),
+        port = os.environ.get('PGPORT')
+    )
+
+    cur = conn.cursor()
+
+    cur.execute('''select p.name,
+                          t.name,
+                          p.jersey_no
+                   from players p
+                   join teams t on p.team_id = t.team_id
+                   join managers m on t.team_id = m.team_id
+                   where m.name = %s
+                   and p.jersey_no < (select avg(jersey_no) from players)
+                   order by p.name''', (mgr_input,))
+
+    result = cur.fetchall()
+
+    for row in result:
+        p_name = row[0]
+        t_name = row[1]
+        jersey = row[2]
+
+        p_init = get_initials(p_name)
+        h_jer = hex_jersey(jersey)
+
+        print(p_init + ',' + t_name + ',' + h_jer)
+
+    cur.close()
+
+except (Exception, psycopg2.DatabaseError) as error:
+    print(error)
+
+finally:
+    if conn is not None:
+        conn.close()
