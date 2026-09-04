@@ -1,0 +1,82 @@
+Question-
+'''
+Write a Python program to print the formatted date of issue, lowercase student roll number, and masked accession number for books issued to students belonging to a given department.
+
+The department code is given in a file named **dept.txt** residing in the same folder as the Python program file.
+
+Note the following:
+
+* The output must be sorted in ascending order of the date of issue.
+* Formatted date of issue: Convert the date to the format "DD/MM/YYYY".
+* Lowercase roll number: Convert the roll number to entirely lowercase.
+* Masked accession number: Replace the last character of the accession number with an asterisk '*' (e.g., "ACC123" becomes "ACC12*").
+
+The output must be comma-separated with no extra spaces.
+
+**Note:** The output may have multiple lines if there are multiple matches. Print one line per match.
+
+The output of the Python program must be:
+**formatted_doi,roll_lower,masked_acc**
+'''
+
+
+code-
+import psycopg2
+import sys
+import os
+
+def format_date(date):
+    return f"{date.day:02d}/{date.month:02d}/{date.year}"
+
+def lower_roll(roll):
+    return roll.lower()
+
+def mask_acc(acc):
+    return acc[:-1] + "*"
+
+conn = None
+
+try:
+    with open("dept.txt", "r") as f:
+        dept_input = f.read().strip()
+
+    conn = psycopg2.connect(
+        database = db_name,
+        user = os.environ.get('PGUSER'),
+        password = os.environ.get('PGPASSWORD'),
+        host = os.environ.get('PGHOST'),
+        port = os.environ.get('PGPORT')
+    )
+
+    cur = conn.cursor()
+
+    cur.execute('''select bi.doi,
+                          s.roll_no,
+                          bi.accession_no
+                   from book_issue bi
+                   join members m on bi.member_no = m.member_no
+                   join students s on m.roll_no = s.roll_no
+                   where s.department_code = %s
+                   order by bi.doi''', (dept_input,))
+
+    result = cur.fetchall()
+
+    for row in result:
+        doi = row[0]
+        roll = row[1]
+        acc = row[2]
+
+        f_doi = format_date(doi)
+        l_roll = lower_roll(roll)
+        m_acc = mask_acc(acc)
+
+        print(f_doi + ',' + l_roll + ',' + m_acc)
+
+    cur.close()
+
+except (Exception, psycopg2.DatabaseError) as error:
+    print(error)
+
+finally:
+    if conn is not None:
+        conn.close()
