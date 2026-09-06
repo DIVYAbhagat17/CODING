@@ -1,0 +1,10 @@
+SELECT m.member_no,
+       m.member_type,
+       COUNT(bi.accession_no) AS total_books
+FROM members m
+JOIN book_issue bi
+    ON m.member_no = bi.member_no
+WHERE m.member_type = 'PG'
+GROUP BY m.member_no, m.member_type
+HAVING COUNT(bi.accession_no) > 2
+ORDER BY total_books DESC;
