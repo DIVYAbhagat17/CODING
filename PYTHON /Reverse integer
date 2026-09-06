@@ -1,0 +1,14 @@
+class Solution(object):
+    def reverse(self, x):
+        if x < 0:
+            x = -x
+            d = str(x)[::-1]
+            ans = -int(d)
+        else:
+            d = str(x)[::-1]
+            ans = int(d)
+
+        if ans > 2147483647 or ans < -2147483648:
+            return 0
+
+        return ans
