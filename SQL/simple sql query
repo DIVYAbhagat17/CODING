@@ -1,0 +1,4 @@
+SELECT m.member_no, m.member_type
+FROM members m
+WHERE m.member_type = 'PG'
+ORDER BY m.member_no;
