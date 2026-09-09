@@ -1,0 +1,25 @@
+students = {}
+
+for i in range(5):
+    name = input("Enter student name: ")
+    marks = int(input("Enter marks: "))
+    students[name] = marks
+
+total = 0
+
+for marks in students.values():
+    total += marks
+
+average = total / len(students)
+
+topper = max(students, key=students.get)
+
+print("\n--- Student Report ---")
+print("Average Marks:", average)
+print("Topper:", topper, "-", students[topper])
+
+print("\nStudents who scored 60 or above:")
+
+for name, marks in students.items():
+    if marks >= 60:
+        print(name, "-", marks)
