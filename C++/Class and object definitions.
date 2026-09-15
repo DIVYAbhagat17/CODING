@@ -1,0 +1,29 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Store
+{
+public:
+    // Data members
+    string item_name;
+    int price;
+    float discount;
+};
+
+int main()
+{
+    // Object creation
+    Store Item1;
+
+    // Assigning values to data members
+    Item1.item_name = "Pencil";
+    Item1.price = 5;
+    Item1.discount = 4.99;
+
+    // Displaying values
+    cout << "The Item is : " << Item1.item_name << "\n";
+    cout << "The Price is : " << Item1.price << "\n";
+    cout << "The Discount is : " << Item1.discount << "\n";
+    return 0;
+}
