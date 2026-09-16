@@ -1,0 +1,23 @@
+ ● Control statements (if-else)
+Code :
+#include <iostream>
+using namespace std;
+
+int main()
+{
+    int a, b;
+
+    cout << "Enter Two Numbers: ";
+    cin >> a >> b;
+
+    if (a > b)
+    {
+        cout << "The Number Entered First is the Largest";
+    }
+    else
+    {
+        cout << "The Number Entered Second is the Largest";
+    }
+
+    return 0;
+}
