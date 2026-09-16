@@ -1,0 +1,38 @@
+#include <iostream>
+using namespace std;
+
+int main()
+{
+    int a, b;
+    char n;
+
+    cout << "Enter Two Numbers: ";
+    cin >> a >> b;
+
+    cout << "Enter Operation (+, -, *, /): ";
+    cin >> n;
+
+    switch (n)
+    {
+        case '+':
+            cout << "Result: " << a + b;
+            break;
+
+        case '-':
+            cout << "Result: " << a - b;
+            break;
+
+        case '*':
+            cout << "Result: " << a * b;
+            break;
+
+        case '/':
+            cout << "Result: " << a / b;
+            break;
+
+        default:
+            cout << "You Entered a Wrong Operation";
+    }
+
+    return 0;
+}
