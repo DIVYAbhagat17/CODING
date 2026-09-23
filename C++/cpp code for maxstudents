@@ -1,0 +1,76 @@
+
+//Title - Write a C++ program to implement a COURSE class with course name, course code, credits, 
+//maximum students and an array of enrolled students. MaxStudents: Maximum number of students that can enroll in the course. 
+
+Code-
+#include <iostream>
+using namespace std;
+class COURSE
+{
+public:
+    string courseName;
+    string courseCode;
+    int credits;
+    int maxStudents;
+    string students[50];
+    int count;
+    void input()
+    {
+        cout << "Enter Course Name: ";
+        cin >> courseName;
+        cout << "Enter Course Code: ";
+        cin >> courseCode;
+        cout << "Enter Credits: ";
+        cin >> credits;
+        cout << "Enter Maximum Students: ";
+        cin >> maxStudents;
+
+        count = 0;
+    }
+
+    void enroll()
+    {
+        if (count < maxStudents)
+        {
+            cout << "Enter Student Name: ";
+            cin >> students[count];
+            count++;
+            cout << "Student enrolled successfully.\n";
+        }
+        else
+        {
+            cout << "Course is full.\n";
+        }
+    }
+    void display()
+    {
+        cout << "\nCourse Name: " << courseName << endl;
+        cout << "Course Code: " << courseCode << endl;
+        cout << "Credits: " << credits << endl;
+        cout << "Maximum Students: " << maxStudents << endl;
+
+        cout << "Enrolled Students:\n";
+        for (int i = 0; i < count; i++)
+        {
+            cout << students[i] << endl;
+        }
+    }
+};
+int main()
+{
+    COURSE c;
+    c.input();
+    c.enroll();
+    c.display();
+    return 0;
+}
+
+
+
+
+
+
+
+
+
+
