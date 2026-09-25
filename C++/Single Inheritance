@@ -1,0 +1,22 @@
+#include<iostream>
+using namespace std;
+class vehicle{
+	public:
+		void start(){
+			cout<<"vehicle started"<<endl;
+			
+		}
+};
+class car:public vehicle{//single iheritance
+public:
+	void drive(){
+		cout<<"car is driving"<<endl;
+	}
+};
+int main(){
+	car c;
+	c.start();
+	c.drive();
+	return 0;
+	};
+Output –
