@@ -1,0 +1,24 @@
+ Function Overloading Code:
+#include<iostream> 
+using namespace std; 
+int volume(int); 
+double volume(double,int);
+long volume(int,int,int);
+//volume of cube int volume(int s) { } int vol;
+vol=s*s*s; 
+return vol;
+//volume of cylinder double volume (double r,int h)  { } int vol;
+vol=3.14*r*r*h; 
+return vol; 
+//volume of cuboid long volume(int l,int b,int h) 
+{ int vol; 
+vol=l*b*h; 
+return vol;
+} 
+int main() { } 
+cout << "Volume of cube: " << volume(5); cout << endl;
+cout << "Volume of cylinder: " << volume(2, 5);
+cout << endl; 
+cout << "Volume of cuboid: " << volume(2, 3, 4); 
+cout << endl; 
+return 0; 
