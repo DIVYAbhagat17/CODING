@@ -1,0 +1,26 @@
+#include<iostream> 
+using namespace std;
+class myclass { 
+int x ; 
+float y;
+public:  void getdata(int a,float b) 
+{   x=a; 
+y=b; 
+}
+void showdata()
+{cout<<"value of x:"<<x;
+cout<<endl; 
+cout<<"value of y:"<<y; 
+cout<<endl; 
+}
+void operator-()     {  
+x = -x; 
+y = -y;     }
+};
+int main() { 
+myclass obj;
+obj.getdata(5,6.7); 
+-obj;
+obj.showdata();
+return 0; 
+} 
