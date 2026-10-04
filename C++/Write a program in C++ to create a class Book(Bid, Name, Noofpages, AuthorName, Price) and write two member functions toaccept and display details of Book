@@ -1,0 +1,45 @@
+#include <iostream> 
+using namespace std; 
+ 
+class Book { 
+    int Bid; 
+    char Name[50]; 
+    int Noofpages; 
+    char AuthorName[50]; 
+    float Price; 
+ 
+public: 
+    void accept() { 
+        cout << "Enter Book ID: "; 
+        cin >> Bid; 
+ 
+        cout << "Enter Book Name: "; 
+        cin >> Name; 
+ 
+        cout << "Enter Number of Pages: "; 
+        cin >> Noofpages; 
+ 
+        cout << "Enter Author Name: "; 
+        cin >> AuthorName; 
+ 
+        cout << "Enter Price: "; 
+        cin >> Price; 
+    } 
+ 
+    void display() { 
+        cout << "\nBook ID: " << Bid; 
+        cout << "\nBook Name: " << Name; 
+        cout << "\nNumber of Pages: " << Noofpages; 
+        cout << "\nAuthor Name: " << AuthorName; 
+        cout << "\nPrice: " << Price; 
+    } 
+}; 
+ 
+int main() { 
+    Book b; 
+ 
+    b.accept(); 
+    b.display(); 
+ 
+    return 0; 
+}
