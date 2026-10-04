@@ -1,0 +1,40 @@
+#include <iostream> 
+#include <string> 
+using namespace std; 
+ 
+class Date { 
+public: 
+    int day, month, year; 
+}; 
+ 
+class Employee { 
+    string name; 
+    Date date; 
+ 
+public: 
+    Employee(string n, Date d) { 
+        name = n; 
+        date = d; 
+    } 
+ 
+    Employee(Employee &e) { 
+        name = e.name; 
+        date = e.date; 
+    } 
+ 
+    void display() { 
+        cout << "Name: " << name << endl; 
+        cout << "Date: " << date.day << "/" << date.month << "/" << date.year; 
+    } 
+}; 
+ 
+int main() { 
+    Date d = {10, 5, 2025}; 
+ 
+    Employee e1("Rahul", d); 
+    Employee e2(e1); 
+ 
+    e2.display(); 
+ 
+    return 0; 
+} 
