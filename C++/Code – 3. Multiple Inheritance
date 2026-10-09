@@ -1,0 +1,32 @@
+#include<iostream>
+using namespace std;
+class Engine{
+	public:
+		void showEngine(){
+			cout<<"Engine type:petrol"<<endl;
+		}
+		};
+class Wheels{
+	public:
+		void showWheels(){
+			cout<<"number of wheels is 4"<<endl;
+			
+		}
+};
+class car:public  Engine,public Wheels{
+	//multiple inheritance
+public:
+	void display(){
+		cout<<"This is a car"<<endl;
+		
+	}
+};
+int main()
+{
+
+car c;
+c.showEngine();
+c.showWheels();
+c.display();
+return 0;
+}
