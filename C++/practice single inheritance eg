@@ -1,0 +1,21 @@
+
+#include <iostream>
+using namespace std;
+class vehicle{
+    public:
+    void display(){
+        cout<<"this is a vehicle"<<endl;
+    }
+};
+class car:public vehicle{
+    public:
+    void drive(){
+        cout<<"car is driving";
+    }
+};
+int main(){
+    car c;
+    c.display();
+    c.drive();
+    return 0;
+}
