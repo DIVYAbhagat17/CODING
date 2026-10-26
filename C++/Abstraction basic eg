@@ -1,0 +1,10 @@
+Abstraction
+
+Meaning: Hiding implementation details and showing only the necessary features to the user.
+
+class Car {
+public:
+    void start() {
+        cout << "Car started";
+    }
+};
