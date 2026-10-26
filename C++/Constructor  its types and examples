@@ -1,0 +1,119 @@
+Constructors in C++
+A constructor is a special member function of a class that is automatically called when an object is created. It is used to initialize objects.
+
+Features of a constructor:
+- Its name is the same as the class name.
+- It has no return type, not even void.
+- It is called automatically when an object is created.
+
+Types of constructors:
+
+1. Default constructor
+A constructor that takes no arguments is called a default constructor.
+class Student {
+public:
+    Student() {
+        cout << "Default constructor";
+    }
+};
+
+int main() {
+    Student s;
+}
+
+
+Output:
+Default constructor
+
+Explanation: When object s is created, the constructor runs automatically without taking any arguments.
+
+2. Parameterized constructor
+
+A constructor that takes one or more arguments is called a parameterized constructor.
+class Student {
+public:
+    int age;
+
+    Student(int a) {
+        age = a;
+    }
+};
+
+int main() {
+    Student s(18);
+    cout << s.age;
+}
+
+
+Output:
+18
+
+Explanation: The value 18 is passed to the constructor and stored in age.
+
+3. Copy constructor
+
+A copy constructor creates a new object by initializing it with an existing object of the same class.
+class Student {
+public:
+    int age;
+
+    Student(int a) {
+        age = a;
+    }
+
+    Student(const Student &s) {
+        age = s.age;
+    }
+};
+
+int main() {
+    Student s1(18);
+    Student s2(s1);
+    cout << s2.age;
+}
+
+
+Output:
+18
+
+Explanation: The object s2 copies the age value from the existing object s1.
+
+Can we overload a constructor?
+Yes, constructors can be overloaded in C++.
+
+Constructor overloading means defining multiple constructors in the same class with different parameter lists. They can differ in the number or types of parameters.
+
+Example:
+
+class Student {
+public:
+    int age;
+
+    Student() {
+        age = 0;
+    }
+
+    Student(int a) {
+        age = a;
+    }
+
+    Student(int a, int b) {
+        age = a + b;
+    }
+};
+
+int main() {
+    Student s1;
+    Student s2(18);
+    Student s3(10, 20);
+
+    cout << s1.age << endl;
+    cout << s2.age << endl;
+    cout << s3.age;
+}
+
+
+Output:
+0
+18
+30
