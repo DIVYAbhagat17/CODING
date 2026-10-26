@@ -1,0 +1,27 @@
+#include <iostream>
+using namespace std;
+
+class Student {
+public:
+    int age = 18;
+
+private:
+    int marks = 90;
+
+public:
+    void display() {
+        cout << age << endl;
+        cout << marks << endl;
+    }
+};
+
+int main() {
+    Student s;
+
+    cout << s.age << endl;  // Allowed
+    // cout << s.marks;     // Error
+
+    s.display();
+
+    return 0;
+}
