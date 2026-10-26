@@ -1,0 +1,15 @@
+Message Passing
+
+Meaning: Objects communicate with each other by calling their functions and passing arguments when needed.
+
+class Student {
+public:
+    void display() {
+        cout << "Hello";
+    }
+};
+
+int main() {
+    Student s;
+    s.display();
+}
