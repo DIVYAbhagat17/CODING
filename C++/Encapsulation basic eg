@@ -1,0 +1,9 @@
+class Student {
+private:
+    int marks = 90;
+
+public:
+    void display() {
+        cout << marks;
+    }
+};
